@@ -10,7 +10,7 @@ export const run = async () => {
     const contentIsFilePath = getInput("contentIsFilePath");
     const regex = getInput("regex") || "---.*";
     const regexFlags = getInput("regexFlags") || "";
-    const appendContentOnMatchOnly = getInput("appendContentOnMatchOnly");
+    const appendContentOnMatchOnly = "true";//getInput("appendContentOnMatchOnly");
     const token = getInput("token", { required: true });
 
     const { owner, repo } = context.repo;
@@ -55,7 +55,12 @@ export const run = async () => {
         output = readFileSync(content).toString("utf-8");
     }
 
+    notice("appendContentOnMatchOnly")
+    notice(appendContentOnMatchOnly);
+
     const re = RegExp(regex, regexFlags);
+    notice(re);
+
     if (body && body.match(re)) {
         notice("Replacing regex matched content in PR body");
         body = body.replace(re, output);
